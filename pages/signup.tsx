@@ -22,8 +22,12 @@ const SignUp = () => {
     mode: "all",
     defaultValues: {
       name: "",
+      password1: "",
     },
   });
+
+  const password = useRef("");
+  password.current = watch("password1");
 
   console.log(render.current++);
 
@@ -178,7 +182,15 @@ const SignUp = () => {
               {...register("password2", {
                 required: {
                   value: true,
-                  message: "필수 값입니다.",
+                  message: "Required",
+                },
+                validate: {
+                  passwordValidate: (value) => {
+                    if (value === password.current) {
+                      return true;
+                    }
+                    return "Password not confirmed";
+                  },
                 },
               })}
             />
