@@ -159,7 +159,7 @@ const SignUp = () => {
             </p>
           </div>
           <div>
-            <div className="my-2 block">
+            <div className="my-2 block pl-1">
               <label
                 htmlFor="password2"
                 className={
@@ -194,13 +194,13 @@ const SignUp = () => {
                 },
               })}
             />
-            <p className={!errors ? "" : "text-red-600 text-sm mt-2"}>
+            <p className={!errors ? "" : "text-red-600 text-sm mt-2 pl-1"}>
               {errors.password2?.message}
             </p>
           </div>
 
           <Button className="mt-6" type="submit" disabled={!isValid}>
-            {isValid ? "Register new account" : "Completed the form"}
+            {isValid ? "Register new account" : "Form not completed"}
           </Button>
         </form>
       </Card>
