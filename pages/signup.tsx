@@ -3,6 +3,8 @@ import { TextInput, Label, Checkbox, Button, Card } from "flowbite-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { clear } from "console";
 import bg from "../public/planner.avif";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 type FormValues = {
   name: string;
@@ -12,7 +14,6 @@ type FormValues = {
 };
 
 const SignUp = () => {
-  const render = useRef(0);
   const {
     register,
     watch,
@@ -25,13 +26,28 @@ const SignUp = () => {
       password1: "",
     },
   });
+  const router = useRouter();
 
   const password = useRef("");
   password.current = watch("password1");
 
-  console.log(render.current++);
-
-  const onSubmit = (data: FormValues) => alert(JSON.stringify(data));
+  const onSubmit = async (data: FormValues) => {
+    try {
+      const { name, email, password1 } = data;
+      const res = await axios.post("http://localhost:3000/api/signup", {
+        name: name,
+        email: email,
+        password: password1,
+      });
+      console.log(res);
+      if (res.status === 200) {
+        router.push("/");
+      }
+    } catch (e) {
+      console.log(e);
+      alert("Email already exists");
+    }
+  };
 
   return (
     <div
@@ -40,7 +56,7 @@ const SignUp = () => {
     >
       <Card className="flex flex-col gap-4 w-[400px] ">
         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          Sign Up
+          Sign-up
         </h5>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>

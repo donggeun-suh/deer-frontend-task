@@ -7,18 +7,20 @@ import {
   Hydrate,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import React from "react";
-import { Provider } from "jotai";
+import React, { useEffect } from "react";
+import { Provider, useAtom } from "jotai";
+import { loginAtom } from "../stores/stores";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
+
   return (
     <Provider>
       <QueryClientProvider client={queryClient}>
-        <Hydrate>
+        <Hydrate state={pageProps.dehydratedState}>
           <Component {...pageProps} />
+          <ReactQueryDevtools initialIsOpen={false} />
         </Hydrate>
-        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </Provider>
   );

@@ -6,6 +6,17 @@ const prisma = new PrismaClient();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    if (req.method === "GET" && req.query.page) {
+      const { page, offset } = await req.query;
+      const pageNum: number = parseInt(page);
+      const offsetNum: number = parseInt(offset);
+      const postsData: Post[] = await prisma.post.findMany({
+        skip: offsetNum * (pageNum - 1),
+        take: offsetNum,
+      });
+      res.status(200).json(postsData);
+    }
+
     if (req.method === "GET") {
       const postsData: Post[] = await prisma.post.findMany();
       res.status(200).json(postsData);
