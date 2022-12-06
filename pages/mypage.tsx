@@ -10,20 +10,7 @@ import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import { getPaginatedPostList, getPostList } from "../endpoints/postAPI";
 import { Pagination } from "flowbite-react";
 
-export async function getStaticProps() {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery(["posts"], () => getPostList());
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
-}
-
 const MyPage = () => {
-  const router = useRouter();
   const [login, setLogin] = useAtom(loginAtom);
   const [page, setPage] = useState(1);
 
@@ -50,7 +37,7 @@ const MyPage = () => {
     setPage(num);
   };
 
-  const length = Math.ceil(parseInt(totalData.length) / 3);
+  const length = 10;
 
   return (
     <div className="h-screen bg-blue-400 font-serif">
