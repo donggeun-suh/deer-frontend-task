@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
-import { TextInput, Label, Checkbox, Button, Card } from "flowbite-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { clear } from "console";
+import { Button, Card } from "flowbite-react";
+import { useRef } from "react";
 import bg from "../public/planner.avif";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -35,8 +34,8 @@ const SignUp = () => {
     try {
       const { name, email, password1 } = data;
       const res = await axios.post("http://localhost:3000/api/signup", {
-        name: name,
-        email: email,
+        name,
+        email,
         password: password1,
       });
       console.log(res);

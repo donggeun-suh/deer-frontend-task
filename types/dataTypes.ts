@@ -13,3 +13,8 @@ export type PostDataType = {
   userId: number;
   user: UserDataType;
 };
+
+export type PaginatedUserPostDataType = {
+  totalPage: number;
+  posts: PostListDataType;
+};

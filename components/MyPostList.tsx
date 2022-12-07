@@ -1,11 +1,11 @@
-import { Table, Button } from "flowbite-react";
-import Link from "next/link";
+import { Table } from "flowbite-react";
+import { PostListDataType } from "../types/dataTypes";
 import MyPostListItem from "./MyPostListItem";
 
-const MyPostList = ({ datas, totalRefetch, paginatedRefetch }) => {
+const MyPostList = ({ datas }: { datas?: PostListDataType }) => {
   console.log(datas);
   return (
-    <div className="w-2/3">
+    <div className=" max-w-[1024px]">
       <Table>
         <Table.Head>
           <Table.HeadCell>No.</Table.HeadCell>
@@ -13,7 +13,7 @@ const MyPostList = ({ datas, totalRefetch, paginatedRefetch }) => {
           <Table.HeadCell>Description</Table.HeadCell>
           <Table.HeadCell>Category</Table.HeadCell>
           <Table.HeadCell>Edit</Table.HeadCell>
-          <Table.HeadCell> Delete</Table.HeadCell>
+          <Table.HeadCell>Delete</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
           {datas?.map((data) => (
@@ -22,8 +22,6 @@ const MyPostList = ({ datas, totalRefetch, paginatedRefetch }) => {
               postId={data.id}
               title={data.title}
               content={data.content}
-              paginatedRefetch={paginatedRefetch}
-              totalRefetch={totalRefetch}
             />
           ))}
         </Table.Body>

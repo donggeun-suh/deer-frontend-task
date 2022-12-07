@@ -11,3 +11,5 @@ export const loginAtom = atom<loginedUser>({
   email: "",
   id: 0,
 });
+
+export const pageAtom = atom<number>(1);

@@ -17,10 +17,8 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider>
       <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
-          <Component {...pageProps} />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </Hydrate>
+        <Component {...pageProps} />
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </Provider>
   );

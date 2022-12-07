@@ -6,8 +6,8 @@ const prisma = new PrismaClient();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const postId: string = req.query.postId as string;
-    const postIdObject: { id: number } = { id: +postId };
+    const postId: number = parseInt(req.query.postId as string, 10);
+    const postIdObject: { id: number } = { id: postId };
 
     if (req.method === "GET") {
       const postsData: Post | null = await prisma.post.findUnique({

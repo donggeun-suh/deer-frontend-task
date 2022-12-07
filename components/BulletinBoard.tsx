@@ -1,22 +1,19 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Card, Button } from "flowbite-react";
 import { useAtom } from "jotai";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import { loginAtom } from "../stores/stores";
+import { createPost } from "../endpoints/postAPI";
+import { loginAtom, pageAtom } from "../stores/stores";
+import { Post } from "../types/models";
 
 type FormValues = {
   title: string;
   content: string;
 };
 
-const BulletinBoard = ({
-  totalRefetch,
-  paginatedRefetch,
-}: {
-  totalRefetch: () => void;
-  paginatedRefetch: () => void;
-}) => {
+const BulletinBoard = () => {
   const {
     register,
     reset,
@@ -29,29 +26,32 @@ const BulletinBoard = ({
       content: "",
     },
   });
-  const router = useRouter();
-  const [login] = useAtom(loginAtom);
 
-  const onSubmit = async (data: FormValues) => {
-    try {
-      const { title, content } = data;
-      const res = await axios.post("http://localhost:3000/api/posts", {
-        title: title,
-        content: content,
+  const [login] = useAtom(loginAtom);
+  const [page] = useAtom(pageAtom);
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: (data: FormValues) => {
+      const newPost = {
+        title: data?.title,
+        content: data?.content,
         userId: login.id,
-      });
-      console.log(res);
-      if (res.status === 200) {
-        totalRefetch();
-        paginatedRefetch();
-        reset();
-      }
-    } catch (e) {
-      console.log(e);
-    }
+      };
+      return createPost(newPost);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["posts", page]);
+      reset();
+    },
+  });
+
+  const onSubmit = (data: FormValues) => {
+    mutate(data);
   };
+
   return (
-    <Card className="flex flex-col gap-4 w-2/3 ">
+    <Card className="flex flex-col gap-4 max-w-[1024px] ">
       <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
         Bulletin Board
       </h5>

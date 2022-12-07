@@ -1,4 +1,5 @@
 import {
+  PaginatedUserPostDataType,
   PostDataType,
   PostListDataType,
   UserDataType,
@@ -8,10 +9,11 @@ import { Post } from "../types/models";
 
 export const getPaginatedUserPostList = async (
   userId: number,
-  page: number = 0,
+  page: number = 1,
   offset: number = 3
 ) => {
-  const { data } = await axios.get<PostListDataType>(
+  console.log("id", userId);
+  const { data } = await axios.get<PaginatedUserPostDataType>(
     `http://localhost:3000/api/users/${userId}/posts?page=${page}&offset=${offset}`,
     {
       headers: {
@@ -69,7 +71,7 @@ export const getPostList = async () => {
   return data;
 };
 
-export const getPost = async () => {
+export const getPost = async (postId: number) => {
   const { data } = await axios.get<PostDataType>(
     `http://localhost:3000/api/posts${postId}`,
     {
@@ -83,13 +85,12 @@ export const getPost = async () => {
   return data;
 };
 
-export const updatePost = async () => {
+export const updatePost = async (postData: Post, postId: number) => {
   const { data } = await axios.put<PostDataType>(
-    `http://localhost:3000/api/posts${postId}`,
+    `http://localhost:3000/api/posts/${postId}`,
     {
-      headers: {
-        Accept: "application/json",
-      },
+      title: postData?.title,
+      content: postData?.content,
     }
   );
   console.log(JSON.stringify(data));
@@ -97,9 +98,9 @@ export const updatePost = async () => {
   return data;
 };
 
-export const deletePost = async () => {
+export const deletePost = async (postId: number) => {
   const { data } = await axios.delete<PostDataType>(
-    `http://localhost:3000/api/posts${postId}`,
+    `http://localhost:3000/api/posts/${postId}`,
     {
       headers: {
         Accept: "application/json",
@@ -111,15 +112,12 @@ export const deletePost = async () => {
   return data;
 };
 
-export const createPost = async () => {
-  const { data } = await axios.post<PostDataType>(
-    `http://localhost:3000/api/posts`,
-    {
-      headers: {
-        Accept: "application/json",
-      },
-    }
-  );
+export const createPost = async (postData: Post) => {
+  const { data } = await axios.post<Post>(`http://localhost:3000/api/posts`, {
+    title: postData?.title,
+    content: postData?.content,
+    userId: postData?.userId,
+  });
   console.log(JSON.stringify(data));
 
   return data;

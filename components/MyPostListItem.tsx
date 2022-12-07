@@ -1,36 +1,34 @@
 import { Table } from "flowbite-react";
 import Link from "next/link";
 import { Button } from "flowbite-react";
-import axios from "axios";
 import { useAtom } from "jotai";
+import { deletePost } from "../endpoints/postAPI";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { pageAtom } from "../stores/stores";
 
 const MyPostListItem = ({
   postId,
   title,
   content,
-  paginatedRefetch,
-  totalRefetch,
 }: {
   postId: number;
   title: string;
   content: string;
-  paginatedRefetch: () => void;
-  totalRefetch: () => void;
 }) => {
+  const [page] = useAtom(pageAtom);
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: (postId: number) => deletePost(postId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["posts", page]);
+    },
+  });
+
   const onClickDeleteHandler = async () => {
-    try {
-      const res = await axios.delete(
-        `http://localhost:3000/api/posts/${postId}`
-      );
-      console.log(res);
-      if (res.status === 200) {
-        totalRefetch();
-        paginatedRefetch();
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    mutate(postId);
   };
+
   return (
     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
@@ -52,7 +50,7 @@ const MyPostListItem = ({
           className="font-medium"
           color={"failure"}
           size={"xs"}
-          onClick={onClickDeleteHandler}
+          onClick={() => onClickDeleteHandler()}
         >
           Delete
         </Button>
