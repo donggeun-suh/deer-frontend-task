@@ -4,24 +4,24 @@ import { Button } from "flowbite-react";
 import { useAtom } from "jotai";
 import { deletePost } from "../endpoints/postAPI";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { pageAtom } from "../stores/stores";
+import { loginAtom, pageAtom } from "../stores/stores";
 
-const MyPostListItem = ({
-  postId,
-  title,
-  content,
-}: {
+interface MyPostListItemProps {
   postId: number;
   title: string;
   content: string;
-}) => {
+}
+
+const MyPagePostListItem = (props: MyPostListItemProps) => {
+  const { postId, title, content } = props;
   const [page] = useAtom(pageAtom);
+  const [login] = useAtom(loginAtom);
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     mutationFn: (postId: number) => deletePost(postId),
     onSuccess: () => {
-      queryClient.invalidateQueries(["posts", page]);
+      queryClient.invalidateQueries(["myPosts", page]);
     },
   });
 
@@ -34,9 +34,13 @@ const MyPostListItem = ({
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
         {postId}
       </Table.Cell>
-      <Table.Cell>{title}</Table.Cell>
-      <Table.Cell>{content}</Table.Cell>
-      <Table.Cell>Study Note</Table.Cell>
+      <Table.Cell>
+        <Link href={`/posts/${postId}`}>{title}</Link>
+      </Table.Cell>
+      <Table.Cell>
+        {content.length > 15 ? content.slice(0, 10) + "..." : content}
+      </Table.Cell>
+      <Table.Cell>{login?.name}</Table.Cell>
       <Table.Cell>
         <Link
           href={`/posts/${postId}/edit`}
@@ -59,4 +63,4 @@ const MyPostListItem = ({
   );
 };
 
-export default MyPostListItem;
+export default MyPagePostListItem;

@@ -41,10 +41,10 @@ export const getUserData = async (userId: number) => {
 };
 
 export const getPaginatedPostList = async (
-  page: number = 0,
+  page: number = 1,
   offset: number = 10
 ) => {
-  const { data } = await axios.get<PostListDataType>(
+  const { data } = await axios.get<PaginatedUserPostDataType>(
     `http://localhost:3000/api/posts?page=${page}&offset=${offset}`,
     {
       headers: {
@@ -73,7 +73,7 @@ export const getPostList = async () => {
 
 export const getPost = async (postId: number) => {
   const { data } = await axios.get<PostDataType>(
-    `http://localhost:3000/api/posts${postId}`,
+    `http://localhost:3000/api/posts/${postId}`,
     {
       headers: {
         Accept: "application/json",

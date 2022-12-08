@@ -13,3 +13,4 @@ export const loginAtom = atom<loginedUser>({
 });
 
 export const pageAtom = atom<number>(1);
+export const postPageAtom = atom<number>(1);

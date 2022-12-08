@@ -1,26 +1,30 @@
 import { useRouter } from "next/router";
-import Link from "next/link";
-
 import { useEffect } from "react";
 import { useAtom } from "jotai";
 import { loginAtom, pageAtom } from "../stores/stores";
 import BulletinBoard from "../components/BulletinBoard";
-import MyPostList from "../components/MyPostList";
-import PaginationBar from "../components/PaginationBar";
+import MyPagePostList from "../components/MyPagePostList";
 import { useQuery } from "@tanstack/react-query";
 import { getPaginatedUserPostList } from "../endpoints/postAPI";
 import NavBar from "../components/NavBar.";
+import MyPagePaginationBar from "../components/MyPagePaginationBar";
+import PageHeader from "../components/PageHeader";
 
 const MyPage = () => {
   const [login, setLogin] = useAtom(loginAtom);
   const [page, setPage] = useAtom(pageAtom);
+  const router = useRouter();
 
   useEffect(() => {
-    setLogin(JSON.parse(localStorage.getItem("login") || ""));
+    const loginItem = localStorage.getItem("login") as string;
+    if (!loginItem) {
+      router.push("/");
+    }
+    setLogin(JSON.parse(loginItem));
   }, []);
 
   const { data: paginatedData } = useQuery({
-    queryKey: ["posts", page],
+    queryKey: ["myPosts", page],
     queryFn: () => getPaginatedUserPostList(login?.id, page),
     keepPreviousData: true,
     refetchOnMount: false,
@@ -28,29 +32,22 @@ const MyPage = () => {
     enabled: !!login?.id,
   });
 
-  // const { data: userData } = useQuery({
-  //   queryKey: ["posts"],
-  //   queryFn: () => getUserData(login?.id),
-  //   refetchOnMount: false,
-  //   refetchOnWindowFocus: false,
-  // });
-
   const onPageChange = (num: number) => {
     setPage(num);
   };
 
+  console.log("mypost_page", page);
+
   return (
     paginatedData && (
-      <div className="flex h-screen bg-blue-400 font-serif">
+      <div className="flex h-screen font-serif">
         <NavBar />
         <div className="flex-1 h-full pl-4 bg-white ">
-          <div className="w-full h-[64px] border-b border-gray-200 px-4 py-4 text-xl">
-            My Page: {login?.name}
-          </div>
-          <div className="flex flex-col pt-4 pr-2 h-[950px]">
-            <BulletinBoard />
-            <MyPostList datas={paginatedData?.posts} />
-            <PaginationBar
+          <PageHeader />
+          <div className="flex flex-col pt-4 pr-2 h-[840px] space-y-4">
+            <BulletinBoard totalPage={paginatedData?.totalPage} />
+            <MyPagePostList datas={paginatedData?.posts} />
+            <MyPagePaginationBar
               totalPage={paginatedData?.totalPage}
               onPageChange={onPageChange}
             />

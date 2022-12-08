@@ -1,17 +1,17 @@
 import { Table } from "flowbite-react";
 import { PostListDataType } from "../types/dataTypes";
-import MyPostListItem from "./MyPostListItem";
+import MyPostListItem from "./MyPagePostListItem";
 
-const MyPostList = ({ datas }: { datas?: PostListDataType }) => {
+const MyPagePostList = ({ datas }: { datas?: PostListDataType }) => {
   console.log(datas);
   return (
-    <div className=" max-w-[1024px]">
+    <div className=" max-w-[1024px] flex-grow">
       <Table>
         <Table.Head>
           <Table.HeadCell>No.</Table.HeadCell>
           <Table.HeadCell>Title</Table.HeadCell>
           <Table.HeadCell>Description</Table.HeadCell>
-          <Table.HeadCell>Category</Table.HeadCell>
+          <Table.HeadCell>Author</Table.HeadCell>
           <Table.HeadCell>Edit</Table.HeadCell>
           <Table.HeadCell>Delete</Table.HeadCell>
         </Table.Head>
@@ -30,4 +30,4 @@ const MyPostList = ({ datas }: { datas?: PostListDataType }) => {
   );
 };
 
-export default MyPostList;
+export default MyPagePostList;

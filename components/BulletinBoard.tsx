@@ -13,7 +13,12 @@ type FormValues = {
   content: string;
 };
 
-const BulletinBoard = () => {
+interface bulletinBoardProps {
+  totalPage: number;
+}
+
+const BulletinBoard = (props: bulletinBoardProps) => {
+  const { totalPage } = props;
   const {
     register,
     reset,
@@ -28,7 +33,7 @@ const BulletinBoard = () => {
   });
 
   const [login] = useAtom(loginAtom);
-  const [page] = useAtom(pageAtom);
+  const [page, setPage] = useAtom(pageAtom);
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
@@ -41,7 +46,7 @@ const BulletinBoard = () => {
       return createPost(newPost);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["posts", page]);
+      queryClient.invalidateQueries(["myPosts", page]);
       reset();
     },
   });

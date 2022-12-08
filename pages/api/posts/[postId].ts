@@ -12,6 +12,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === "GET") {
       const postsData: Post | null = await prisma.post.findUnique({
         where: postIdObject,
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
       });
       res.status(200).json(postsData);
     }

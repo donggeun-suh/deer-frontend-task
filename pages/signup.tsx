@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Button, Card } from "flowbite-react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import bg from "../public/planner.avif";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -25,6 +25,14 @@ const SignUp = () => {
       password1: "",
     },
   });
+  useEffect(() => {
+    const loginItem = localStorage.getItem("login") as string;
+    console.log(loginItem);
+    if (loginItem && JSON.parse(loginItem)?.id !== 0) {
+      router.push("/mypage");
+    }
+  }, []);
+
   const router = useRouter();
 
   const password = useRef("");

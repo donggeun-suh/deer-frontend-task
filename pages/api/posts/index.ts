@@ -23,7 +23,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           },
         },
       });
-      res.status(200).json(postsData);
+      const postDataSize: number = await prisma.post.count();
+      res.status(200).json({
+        totalPage: Math.ceil(postDataSize / offsetNum),
+        posts: postsData,
+      });
     }
 
     if (req.method === "GET") {

@@ -1,108 +1,61 @@
-import { useRouter } from "next/router";
-import Link from "next/link";
-import { AiFillHome, AiOutlineHome, AiOutlineBook } from "react-icons/ai";
-import {
-  TextInput,
-  Label,
-  Checkbox,
-  Button,
-  Card,
-  Pagination,
-  Table,
-} from "flowbite-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import MyPostList from "../components/MyPostList";
-import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
+import { Card } from "flowbite-react";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getPaginatedPostList, getPostList } from "../endpoints/postAPI";
+import NavBar from "../components/NavBar.";
+import PaginationBar from "../components/PostsPaginationBar";
+import MyPostList from "../components/MyPagePostList";
+import { loginAtom, postPageAtom } from "../stores/stores";
+import { useAtom } from "jotai";
+import { useRouter } from "next/router";
+import PageHeader from "../components/PageHeader";
+import PostsPagePostList from "../components/PostsPagePostList";
 
-export async function getStaticProps() {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery(["posts"], () => getPostList());
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
-}
 const Posts = () => {
-  const [page, setPage] = useState(1);
-  const { data: paginatedData, refetch: paginatedRefetch } = useQuery({
-    queryKey: ["posts", page],
-    queryFn: () => getPaginatedPostList(page, 10),
+  const [login, setLogin] = useAtom(loginAtom);
+  const [page, setPage] = useAtom(postPageAtom);
+  const router = useRouter();
+
+  useEffect(() => {
+    const loginItem = localStorage.getItem("login") as string;
+    if (!loginItem) {
+      router.push("/");
+    }
+    setLogin(JSON.parse(loginItem));
+  }, []);
+
+  const { data: paginatedData } = useQuery({
+    queryKey: ["totalPosts", page],
+    queryFn: () => getPaginatedPostList(page),
     keepPreviousData: true,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+    enabled: !!login?.id,
   });
 
-  const { data: totalData, refetch: totalRefetch } = useQuery({
-    queryKey: ["posts"],
-    queryFn: () => getPostList(),
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
+  console.log(paginatedData);
+  console.log("page?", page);
 
   const onPageChange = (num: number) => {
     setPage(num);
   };
 
-  const length = Math.ceil(parseInt(totalData.length) / 10);
-
   return (
-    <div className="h-screen font-serif">
-      <aside className="fixed top-0 left-0 flex h-full sm:block">
-        <div className="z-30 h-full w-15 overflow-y-auto border-r border-gray-200 bg-white py-2 px-2">
-          <ul className="space-y-1 pt-14">
-            <li>
-              <Link
-                href={`/mypage`}
-                className="flex items-center justify-center rounded-sm py-1 font-semibold transition duration-75 border-y border-primary text-gray-900 dark:bg-gray-700 dark:text-white"
-              >
-                <div className="flex flex-col items-center justify-center gap-1.5">
-                  <AiOutlineHome className="h-5 w-5" />{" "}
-                  <span className="text-xs">My Page</span>
-                </div>{" "}
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={`/posts`}
-                className="flex items-center justify-center rounded-sm py-1 font-semibold transition duration-75 border-y border-primary text-gray-900 dark:bg-gray-700 dark:text-white"
-              >
-                <div className="flex flex-col items-center justify-center gap-1.5">
-                  <AiOutlineBook className="h-5 w-5" />{" "}
-                  <span className="text-xs">Posts</span>
-                </div>{" "}
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </aside>
-      <div className="pl-20 bg-white h-full">
-        <div className="w-full h-[64px] border-b border-gray-200 px-4 py-4 text-xl">
-          Posts
-        </div>
-        <Card className="mt-2 h-full">
-          <div className="w-full mb-4 h-full flex flex-col">
-            <MyPostList
-              datas={paginatedData}
-              paginatedRefetch={paginatedRefetch}
-              totalRefetch={totalRefetch}
+    paginatedData && (
+      <div className="flex h-screen font-serif">
+        <NavBar />
+        <div className="flex-1 h-full pl-4 bg-white">
+          <PageHeader />
+          <Card className="flex mt-4 pr-2 h-[700px] max-w-[1024px] ">
+            <PostsPagePostList datas={paginatedData?.posts} />
+            <PaginationBar
+              totalPage={paginatedData?.totalPage}
+              onPageChange={onPageChange}
             />
-            <div className="flex justify-center mt-2">
-              <Pagination
-                currentPage={page}
-                totalPages={length}
-                showIcons={true}
-                onPageChange={onPageChange}
-              />
-            </div>
-          </div>
-        </Card>
+          </Card>
+        </div>
       </div>
-    </div>
+    )
   );
 };
 

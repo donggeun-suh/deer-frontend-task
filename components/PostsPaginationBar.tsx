@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { pageAtom } from "../stores/stores";
+import { postPageAtom } from "../stores/stores";
 import { Pagination } from "flowbite-react";
 
 interface paginationProps {
@@ -7,8 +7,8 @@ interface paginationProps {
   onPageChange: (num: number) => void;
 }
 
-const PaginationBar = (props: paginationProps) => {
-  const [page] = useAtom(pageAtom);
+const PostsPaginationBar = (props: paginationProps) => {
+  const [page] = useAtom(postPageAtom);
   const { totalPage, onPageChange } = props;
   return (
     <div className="flex justify-center max-w-[1024px]">
@@ -22,4 +22,4 @@ const PaginationBar = (props: paginationProps) => {
   );
 };
 
-export default PaginationBar;
+export default PostsPaginationBar;

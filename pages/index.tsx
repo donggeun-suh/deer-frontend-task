@@ -31,6 +31,14 @@ export default function Home() {
   const router = useRouter();
   const [login, setLogin] = useAtom(loginAtom);
 
+  useEffect(() => {
+    const loginItem = localStorage.getItem("login") as string;
+    console.log(loginItem);
+    if (loginItem && JSON.parse(loginItem)?.id !== 0) {
+      router.push("/mypage");
+    }
+  }, []);
+
   const onSubmit = async (data: FormValues) => {
     try {
       const { email, password } = data;
