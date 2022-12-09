@@ -4,12 +4,14 @@ import { Pagination } from "flowbite-react";
 
 interface paginationProps {
   totalPage: number;
-  onPageChange: (num: number) => void;
 }
 
 const PostsPaginationBar = (props: paginationProps) => {
-  const [page] = useAtom(postPageAtom);
-  const { totalPage, onPageChange } = props;
+  const [page, setPage] = useAtom(postPageAtom);
+  const { totalPage } = props;
+  const onPageChange = (num: number) => {
+    setPage(num);
+  };
   return (
     <div className="flex justify-center max-w-[1024px]">
       <Pagination

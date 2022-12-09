@@ -12,7 +12,7 @@ import PageHeader from "../components/PageHeader";
 
 const MyPage = () => {
   const [login, setLogin] = useAtom(loginAtom);
-  const [page, setPage] = useAtom(pageAtom);
+  const [page] = useAtom(pageAtom);
   const router = useRouter();
 
   useEffect(() => {
@@ -32,10 +32,6 @@ const MyPage = () => {
     enabled: !!login?.id,
   });
 
-  const onPageChange = (num: number) => {
-    setPage(num);
-  };
-
   console.log("mypost_page", paginatedData?.posts);
 
   return (
@@ -47,10 +43,7 @@ const MyPage = () => {
           <div className="flex flex-col pt-4 pr-2 h-[840px] space-y-4">
             <BulletinBoard />
             <MyPagePostList datas={paginatedData?.posts} />
-            <MyPagePaginationBar
-              totalPage={paginatedData?.totalPage}
-              onPageChange={onPageChange}
-            />
+            <MyPagePaginationBar totalPage={paginatedData?.totalPage} />
           </div>
         </div>
       </div>

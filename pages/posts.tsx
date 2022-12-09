@@ -1,10 +1,9 @@
 import { Card } from "flowbite-react";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getPaginatedPostList, getPostList } from "../endpoints/postAPI";
+import { getPaginatedPostList } from "../endpoints/postAPI";
 import NavBar from "../components/NavBar.";
 import PaginationBar from "../components/PostsPaginationBar";
-import MyPostList from "../components/MyPagePostList";
 import { loginAtom, postPageAtom } from "../stores/stores";
 import { useAtom } from "jotai";
 import { useRouter } from "next/router";
@@ -13,7 +12,7 @@ import PostsPagePostList from "../components/PostsPagePostList";
 
 const Posts = () => {
   const [login, setLogin] = useAtom(loginAtom);
-  const [page, setPage] = useAtom(postPageAtom);
+  const [page] = useAtom(postPageAtom);
   const router = useRouter();
 
   useEffect(() => {
@@ -33,13 +32,6 @@ const Posts = () => {
     enabled: !!login?.id,
   });
 
-  console.log(paginatedData);
-  console.log("page?", page);
-
-  const onPageChange = (num: number) => {
-    setPage(num);
-  };
-
   return (
     paginatedData && (
       <div className="flex h-screen font-serif">
@@ -48,10 +40,7 @@ const Posts = () => {
           <PageHeader />
           <Card className="flex mt-4 pr-2 h-[700px] max-w-[1024px] ">
             <PostsPagePostList datas={paginatedData?.posts} />
-            <PaginationBar
-              totalPage={paginatedData?.totalPage}
-              onPageChange={onPageChange}
-            />
+            <PaginationBar totalPage={paginatedData?.totalPage} />
           </Card>
         </div>
       </div>

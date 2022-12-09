@@ -5,7 +5,7 @@ import {
   UserDataType,
 } from "./../types/dataTypes";
 import axios from "axios";
-import { Post } from "../types/models";
+import { Post } from "../types/modelTypes";
 
 export const getPaginatedUserPostList = async (
   userId: number,

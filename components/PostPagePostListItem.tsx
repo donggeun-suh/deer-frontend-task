@@ -3,14 +3,14 @@ import { useAtom } from "jotai";
 import Link from "next/link";
 import { loginAtom, pageAtom } from "../stores/stores";
 
-interface PostsPagePostListItemProps {
+interface postsPagePostListItemProps {
   postId: number;
   title: string;
   content: string;
   author: string;
 }
 
-const PostsPagePostListItem = (props: PostsPagePostListItemProps) => {
+const PostsPagePostListItem = (props: postsPagePostListItemProps) => {
   const { postId, title, content, author } = props;
   return (
     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">

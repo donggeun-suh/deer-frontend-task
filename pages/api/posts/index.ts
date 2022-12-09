@@ -1,7 +1,7 @@
 import { PostListDataType } from "./../../../types/dataTypes";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
-import { Post } from "../../../types/models";
+import { Post } from "../../../types/modelTypes";
 
 const prisma = new PrismaClient();
 

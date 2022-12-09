@@ -6,13 +6,13 @@ import { deletePost } from "../endpoints/postAPI";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { loginAtom, pageAtom } from "../stores/stores";
 
-interface MyPostListItemProps {
+interface myPostListItemProps {
   postId: number;
   title: string;
   content: string;
 }
 
-const MyPagePostListItem = (props: MyPostListItemProps) => {
+const MyPagePostListItem = (props: myPostListItemProps) => {
   const { postId, title, content } = props;
   const [page] = useAtom(pageAtom);
   const [login] = useAtom(loginAtom);
