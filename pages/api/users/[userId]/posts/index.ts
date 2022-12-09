@@ -9,6 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const pageNum: number = parseInt(req.query.page as string, 10);
     const offsetNum: number = parseInt(req.query.offset as string, 10);
     const userId: number = parseInt(req.query.userId as string, 10);
+    console.log("userId", userId);
 
     const postsData: PostListDataType | null = await prisma.post.findMany({
       skip: offsetNum * (pageNum - 1),
@@ -21,6 +22,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             email: true,
           },
         },
+      },
+      where: {
+        userId: userId,
       },
     });
     const postDataSize: number = await prisma.post.count({

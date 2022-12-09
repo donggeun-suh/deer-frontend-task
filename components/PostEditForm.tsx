@@ -1,31 +1,42 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, Button } from "flowbite-react";
 import { useAtom } from "jotai";
+
 import { useForm } from "react-hook-form";
-import { createPost } from "../endpoints/postAPI";
+import { updatePost } from "../endpoints/postAPI";
 import { loginAtom, pageAtom } from "../stores/stores";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { PostDataType } from "../types/dataTypes";
+import { useRouter } from "next/router";
 
 type FormValues = {
   title: string;
   content: string;
 };
 
-const BulletinBoard = () => {
+interface postEditFormProps {
+  id: number;
+  data: PostDataType;
+}
+
+const PostEditForm = (props: postEditFormProps) => {
+  const { id, data } = props;
+  const router = useRouter();
+  const [page] = useAtom(pageAtom);
+
   const {
     register,
-    reset,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<FormValues>({
     mode: "all",
     defaultValues: {
-      title: "",
-      content: "",
+      title: data?.title,
+      content: data?.content,
     },
   });
 
   const [login] = useAtom(loginAtom);
-  const [page, setPage] = useAtom(pageAtom);
+
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
@@ -35,22 +46,23 @@ const BulletinBoard = () => {
         content: data?.content,
         userId: login.id,
       };
-      return createPost(newPost);
+      return updatePost(newPost, parseInt(id, 10));
     },
     onSuccess: () => {
+      queryClient.invalidateQueries(["posts", id]);
       queryClient.invalidateQueries(["myPosts", login.id, page]);
-      reset();
+      router.push(`/posts/${id}`);
     },
   });
+  console.log(data);
 
   const onSubmit = (data: FormValues) => {
     mutate(data);
   };
-
   return (
-    <Card className="flex flex-col gap-4 max-w-[1024px] ">
+    <Card className="flex flex-col gap-4 mt-4 max-w-[1024px] ">
       <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        Bulletin Board
+        {`Edit Post #${id}`}
       </h5>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
@@ -126,11 +138,11 @@ const BulletinBoard = () => {
         </div>
 
         <Button className="mt-6" type="submit" disabled={!isValid}>
-          {isValid ? "Post" : "Form not completed"}
+          {isValid ? "Edit" : "Form not completed"}
         </Button>
       </form>
     </Card>
   );
 };
 
-export default BulletinBoard;
+export default PostEditForm;

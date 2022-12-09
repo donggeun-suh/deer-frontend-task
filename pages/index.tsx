@@ -48,8 +48,9 @@ export default function Home() {
       });
 
       if (res.status === 200) {
-        localStorage.setItem("login", JSON.stringify(res.data));
-        setLogin(JSON.parse(localStorage.getItem("login") || ""));
+        await localStorage.setItem("login", JSON.stringify(res.data));
+        await setLogin(JSON.parse(localStorage.getItem("login") as string));
+        console.log(login);
         router.push("/mypage");
       }
     } catch (e) {

@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET" && req.query.userId) {
     const userId: number = parseInt(req.query.userId as string, 10);
+
     const userData: UserDataType | null = await prisma.user.findUnique({
       where: { id: userId },
       select: {

@@ -4,6 +4,7 @@ import NavBar from "../../components/NavBar.";
 import PageHeader from "../../components/PageHeader";
 import { QueryClient, dehydrate, useQuery } from "@tanstack/react-query";
 import { getPost } from "../../endpoints/postAPI";
+import { useEffect } from "react";
 
 export async function getStaticPaths() {
   return {
@@ -31,7 +32,15 @@ const SinglePostPage = () => {
   const { data } = useQuery({
     queryKey: ["posts", id],
     queryFn: () => getPost(parseInt(id, 10)),
+    enabled: !!id,
   });
+
+  useEffect(() => {
+    const loginItem = localStorage.getItem("login") as string;
+    if (!loginItem) {
+      router.push("/");
+    }
+  }, []);
 
   console.log(data?.user);
 

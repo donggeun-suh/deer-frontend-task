@@ -24,7 +24,7 @@ const MyPage = () => {
   }, []);
 
   const { data: paginatedData } = useQuery({
-    queryKey: ["myPosts", page],
+    queryKey: ["myPosts", login?.id, page],
     queryFn: () => getPaginatedUserPostList(login?.id, page),
     keepPreviousData: true,
     refetchOnMount: false,
@@ -36,7 +36,7 @@ const MyPage = () => {
     setPage(num);
   };
 
-  console.log("mypost_page", page);
+  console.log("mypost_page", paginatedData?.posts);
 
   return (
     paginatedData && (
@@ -45,7 +45,7 @@ const MyPage = () => {
         <div className="flex-1 h-full pl-4 bg-white ">
           <PageHeader />
           <div className="flex flex-col pt-4 pr-2 h-[840px] space-y-4">
-            <BulletinBoard totalPage={paginatedData?.totalPage} />
+            <BulletinBoard />
             <MyPagePostList datas={paginatedData?.posts} />
             <MyPagePaginationBar
               totalPage={paginatedData?.totalPage}

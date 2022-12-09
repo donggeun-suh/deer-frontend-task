@@ -20,6 +20,7 @@ const PostsPagePostList = ({ datas }: { datas?: PostListDataType }) => {
               postId={data.id}
               title={data.title}
               content={data.content}
+              author={data.user.name}
             />
           ))}
         </Table.Body>

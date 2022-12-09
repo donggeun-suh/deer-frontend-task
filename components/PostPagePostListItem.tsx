@@ -7,12 +7,11 @@ interface PostsPagePostListItemProps {
   postId: number;
   title: string;
   content: string;
+  author: string;
 }
 
 const PostsPagePostListItem = (props: PostsPagePostListItemProps) => {
-  const { postId, title, content } = props;
-  const [page] = useAtom(pageAtom);
-  const [login] = useAtom(loginAtom);
+  const { postId, title, content, author } = props;
   return (
     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
@@ -22,7 +21,7 @@ const PostsPagePostListItem = (props: PostsPagePostListItemProps) => {
         <Link href={`/posts/${postId}`}>{title}</Link>
       </Table.Cell>
       <Table.Cell>{content}</Table.Cell>
-      <Table.Cell>{login?.name}</Table.Cell>
+      <Table.Cell>{author}</Table.Cell>
     </Table.Row>
   );
 };

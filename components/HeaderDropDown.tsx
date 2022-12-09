@@ -3,12 +3,20 @@ import { useAtom } from "jotai";
 import { loginAtom } from "../stores/stores";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useQueryClient } from "@tanstack/react-query";
 
 const HeaderDropDown = () => {
-  const [login] = useAtom(loginAtom);
+  const [login, setLogin] = useAtom(loginAtom);
   const router = useRouter();
+  const queryClient = useQueryClient();
   const onClickHandler = () => {
     localStorage.removeItem("login");
+    setLogin({
+      name: "",
+      email: "",
+      id: 0,
+    });
+    queryClient.cancelQueries();
     router.push("/");
   };
 
