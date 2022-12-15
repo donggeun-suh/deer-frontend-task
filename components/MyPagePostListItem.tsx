@@ -21,7 +21,7 @@ const MyPagePostListItem = (props: myPostListItemProps) => {
   const { mutate } = useMutation({
     mutationFn: (postId: number) => deletePost(postId),
     onSuccess: () => {
-      queryClient.invalidateQueries(["myPosts", page]);
+      queryClient.invalidateQueries(["myPosts", login?.id, page]);
     },
   });
 
