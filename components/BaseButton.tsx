@@ -1,0 +1,21 @@
+import React, { PropsWithChildren } from 'react';
+import clsx from 'clsx';
+
+type Props = {} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+const BaseButton = ({ children, className, ...props }: PropsWithChildren<Props>): JSX.Element => {
+    return (
+        <button
+            type="button"
+            className={clsx(
+                'focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900',
+                className,
+            )}
+            {...props}
+        >
+            {children}
+        </button>
+    );
+};
+
+export default BaseButton;

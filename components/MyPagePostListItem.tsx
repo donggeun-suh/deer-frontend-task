@@ -5,6 +5,7 @@ import { useAtom } from 'jotai';
 import { deletePost } from '../endpoints/postAPI';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { loginAtom, pageAtom } from '../stores/stores';
+import MyPageBaseTableItem from './MyPageBaseTableItem';
 
 interface myPostListItemProps {
     postId: number;
@@ -30,27 +31,15 @@ const MyPagePostListItem = (props: myPostListItemProps) => {
     };
 
     return (
-        <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">{postId}</Table.Cell>
-            <Table.Cell>
-                <Link href={`/posts/${postId}`}>{title}</Link>
-            </Table.Cell>
-            <Table.Cell>{content.length > 15 ? content.slice(0, 10) + '...' : content}</Table.Cell>
-            <Table.Cell>{login?.name}</Table.Cell>
-            <Table.Cell>
-                <Link
-                    href={`/posts/${postId}/edit`}
-                    className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                >
-                    Edit
-                </Link>
-            </Table.Cell>
-            <Table.Cell>
-                <Button className="font-medium" color={'failure'} size={'xs'} onClick={() => onClickDeleteHandler()}>
-                    Delete
-                </Button>
-            </Table.Cell>
-        </Table.Row>
+        <>
+            <MyPageBaseTableItem
+                postId={postId}
+                title={title}
+                content={content.length > 15 ? content.slice(0, 10) + '...' : content}
+                author={login?.name}
+                onClickDeleteHandler={onClickDeleteHandler}
+            />
+        </>
     );
 };
 

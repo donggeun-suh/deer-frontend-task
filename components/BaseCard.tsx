@@ -1,9 +1,9 @@
 import React, { PropsWithChildren } from 'react';
 import clsx from 'clsx';
 
-type Props = {} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+type Props = {} & React.HTMLAttributes<HTMLDivElement>;
 
-const BaseCard = ({ children, className, ...props }: PropsWithChildren<Props>): JSX.Element => {
+const BaseCard = ({ children, className }: PropsWithChildren<Props>): JSX.Element => {
     return (
         <div
             className={clsx(
