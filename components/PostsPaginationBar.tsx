@@ -1,6 +1,7 @@
 import { useAtom } from "jotai";
 import { postPageAtom } from "../stores/stores";
 import { Pagination } from "flowbite-react";
+import { useRouter } from "next/router";
 
 interface paginationProps {
   totalPage: number;
@@ -9,7 +10,10 @@ interface paginationProps {
 const PostsPaginationBar = (props: paginationProps) => {
   const [page, setPage] = useAtom(postPageAtom);
   const { totalPage } = props;
-  const onPageChange = (num: number) => {
+  const router = useRouter();
+  const onPageChange = async (num: number) => {
+    console.log("page change", num);
+    await router.push(`/posts?page=${num}`);
     setPage(num);
   };
   return (

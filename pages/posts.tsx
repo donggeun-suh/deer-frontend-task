@@ -12,8 +12,9 @@ import PostsPagePostList from "../components/PostsPagePostList";
 
 const Posts = () => {
   const [login, setLogin] = useAtom(loginAtom);
-  const [page] = useAtom(postPageAtom);
+  const [page, setPage] = useAtom(postPageAtom);
   const router = useRouter();
+  const queryPage = parseInt(router?.query?.page as string, 10);
 
   useEffect(() => {
     const loginItem = localStorage.getItem("login") as string;
@@ -22,6 +23,10 @@ const Posts = () => {
     }
     setLogin(JSON.parse(loginItem));
   }, []);
+
+  useEffect(() => {
+    setPage(queryPage);
+  }, [queryPage]);
 
   const { data: paginatedData } = useQuery({
     queryKey: ["totalPosts", page],

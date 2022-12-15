@@ -10,7 +10,7 @@ export default function Home() {
     const loginItem = localStorage.getItem("login") as string;
     console.log(loginItem);
     if (loginItem && JSON.parse(loginItem)?.id !== 0) {
-      router.push("/mypage");
+      router.push("/mypage?page=1");
     }
   }, []);
 

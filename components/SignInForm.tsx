@@ -32,7 +32,7 @@ const SignInForm = () => {
     if (res?.status === 200) {
       await localStorage.setItem("login", JSON.stringify(res?.data));
       await setLogin(JSON.parse(localStorage.getItem("login") as string));
-      router.push("/mypage");
+      router.push("/mypage?page=1");
     }
   };
 

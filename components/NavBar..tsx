@@ -8,7 +8,7 @@ const NavBar = () => {
         <ul className="space-y-1 pt-14">
           <li>
             <Link
-              href={`/mypage`}
+              href={`/mypage?page=1`}
               className="flex items-center justify-center rounded-sm py-1 font-semibold transition duration-75 border-y border-primary text-gray-900 dark:bg-gray-700 dark:text-white"
             >
               <div className="flex flex-col items-center justify-center gap-1.5">
@@ -19,7 +19,7 @@ const NavBar = () => {
           </li>
           <li>
             <Link
-              href={`/posts`}
+              href={`/posts?page=1`}
               className="flex items-center justify-center rounded-sm py-1 font-semibold transition duration-75 border-y border-primary text-gray-900 dark:bg-gray-700 dark:text-white"
             >
               <div className="flex flex-col items-center justify-center gap-1.5">
