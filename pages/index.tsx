@@ -12,7 +12,7 @@ export default function Home() {
         if (loginItem && JSON.parse(loginItem)?.id !== 0) {
             router.push('/mypage?page=1');
         }
-    }, []);
+    }, [router]);
 
     return (
         <div

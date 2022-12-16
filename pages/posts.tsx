@@ -23,11 +23,11 @@ const Posts = () => {
             router.push('/');
         }
         setLogin(JSON.parse(loginItem));
-    }, []);
+    }, [router, setLogin]);
 
     useEffect(() => {
         setPage(queryPage);
-    }, [queryPage]);
+    }, [setPage, queryPage]);
 
     const { data: paginatedData } = useQuery({
         queryKey: ['totalPosts', page],

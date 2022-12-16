@@ -12,7 +12,7 @@ const SignUp = () => {
         if (loginItem && JSON.parse(loginItem)?.id !== 0) {
             router.push('/mypage');
         }
-    }, []);
+    }, [router]);
 
     return (
         <div

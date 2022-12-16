@@ -42,7 +42,7 @@ const SinglePostPage = () => {
         if (!loginItem) {
             router.push('/');
         }
-    }, []);
+    }, [router]);
 
     console.log(data?.user);
 

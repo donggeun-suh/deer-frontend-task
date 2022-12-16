@@ -28,7 +28,7 @@ const MyPage = () => {
 
     useEffect(() => {
         setPage(queryPage);
-    }, [queryPage]);
+    }, [queryPage, setPage]);
 
     const { data: paginatedData } = useQuery({
         queryKey: ['myPosts', login?.id, page],
