@@ -6,6 +6,7 @@ import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { getPost } from '../../../endpoints/postAPI';
 import { useRouter } from 'next/router';
 import { PostDataType } from '../../../types/dataTypes';
+import { GetStaticPropsContext } from 'next';
 
 export async function getStaticPaths() {
     return {
@@ -14,8 +15,8 @@ export async function getStaticPaths() {
     };
 }
 
-export async function getStaticProps(context) {
-    const id: number = context.params?.id;
+export async function getStaticProps(context: GetStaticPropsContext) {
+    const id: number = parseInt(context.params?.id as string, 10);
     const queryClient = new QueryClient();
 
     await queryClient.prefetchQuery(['posts', id], () => getPost(id));
