@@ -21,7 +21,6 @@ const BasePagination = ({ className, ...props }: PropsWithChildren<Props>): JSX.
                 {Array.from({ length: props.totalPages }, (v, i) => i + 1).map((num) => (
                     <li key={num}>
                         <a
-                            href="#"
                             onClick={() => props.onPageChange(num)}
                             className={
                                 num === props.currentPage

@@ -1,11 +1,9 @@
-import { Table } from 'flowbite-react';
-import Link from 'next/link';
-import { Button } from 'flowbite-react';
 import { useAtom } from 'jotai';
 import { deletePost } from '../endpoints/postAPI';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { loginAtom, pageAtom } from '../stores/stores';
 import MyPageBaseTableItem from './MyPageBaseTableItem';
+import MyPagePostListItemView from './MyPagePostListItemView';
 
 interface myPostListItemProps {
     postId: number;
@@ -26,21 +24,18 @@ const MyPagePostListItem = (props: myPostListItemProps) => {
         },
     });
 
-    const onClickDeleteHandler = async () => {
-        mutate(postId);
+    const viewProps = {
+        onClickDeleteHandler: async () => {
+            mutate(postId);
+        },
+        page,
+        author: login?.name,
+        postId,
+        title,
+        content,
     };
 
-    return (
-        <>
-            <MyPageBaseTableItem
-                postId={postId}
-                title={title}
-                content={content.length > 15 ? content.slice(0, 10) + '...' : content}
-                author={login?.name}
-                onClickDeleteHandler={onClickDeleteHandler}
-            />
-        </>
-    );
+    return <MyPagePostListItemView {...viewProps} />;
 };
 
 export default MyPagePostListItem;
