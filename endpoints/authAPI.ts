@@ -21,7 +21,7 @@ export const SignUp = async (data: signUpFormValues) => {
 export const SignIn = async (data: signInFormValues) => {
     try {
         const { email, password } = data;
-        const res = await axios.post('http://localhost:3000/api/signin', {
+        const res = await axios.post('https://deer-frontend-task.vercel.app//api/signin', {
             email: email,
             password: password,
         });
