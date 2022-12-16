@@ -10,6 +10,7 @@ import NavBar from '../components/NavBar.';
 import MyPagePaginationBar from '../components/MyPagePaginationBar';
 import PageHeader from '../components/PageHeader';
 import { isNumber } from 'util';
+import { set } from 'react-hook-form';
 
 const MyPage = () => {
     const [login, setLogin] = useAtom(loginAtom);
@@ -24,7 +25,7 @@ const MyPage = () => {
             router.push('/');
         }
         setLogin(JSON.parse(loginItem));
-    }, []);
+    }, [router, setLogin]);
 
     useEffect(() => {
         setPage(queryPage);
